@@ -1,9 +1,11 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
 @using Umbraco.Cms.Core.Models;
+@using Umbraco.Cms.Core.Configuration;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @{
-	Layout = null;
-    var logo = Model.Value<MediaWithCrops>("logo", fallback: Fallback.ToAncestors);	
+    Layout = null;
+    var version = new UmbracoVersion().SemanticVersion.ToSemanticStringWithoutBuild();
+    var logo = Model.Value<MediaWithCrops>("logo", fallback: Fallback.ToAncestors);
 }
 <!doctype html>
 <html dir="ltr" lang="en-US">
@@ -12,10 +14,10 @@
         <meta charset="UTF-8" />
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width" />
-        <meta name="generator" content="Umbraco v7.8.1" />
-        <meta http-equiv="last-modified" content="" />        
-		<meta name="dcterms.rightsHolder" content="Groove Juice Swing, LLC" />
-		<meta name="dcterms.dateCopyrighted" content="" />
+        <meta name="generator" content="Umbraco v@(version)" />
+        <meta http-equiv="last-modified" content="@Model.UpdateDate.ToString("D")" />
+        <meta name="dcterms.rightsHolder" content="@Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)" />
+		<meta name="dcterms.dateCopyrighted" content="@Model.CreateDate.ToString("D")" />
         <!-- Styles -->
 		<link href="/css/Test1 Styles.css" rel="stylesheet" type="text/css" />
     </head>
@@ -27,9 +29,9 @@
         }
         @Html.Partial("Navigation")
         <main>
-        @RenderBody()
+            @RenderBody()
         </main>
-        <footer>
+            <footer>
         Copyright &copy; @DateTime.Now.Year @Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)
         </footer>
     </body>
