@@ -1,7 +1,9 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Models;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @{
 	Layout = null;
+    var logo = Model.Value<MediaWithCrops>("logo", fallback: Fallback.ToAncestors);	
 }
 <!doctype html>
 <html dir="ltr" lang="en-US">
@@ -18,6 +20,17 @@
 		<link href="/css/Test1 Styles.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
+        @if (logo != null) {
+        <header>
+            <a href="/"><img src="@logo.MediaUrl()" alt="Logo" /></a>
+        </header>
+        }
+        @Html.Partial("Navigation")
+        <main>
         @RenderBody()
+        </main>
+        <footer>
+        Copyright &copy; @DateTime.Now.Year @Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)
+        </footer>
     </body>
 </html>
