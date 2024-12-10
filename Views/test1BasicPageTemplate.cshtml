@@ -1,7 +1,35 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
 @{
 	Layout = "test1MasterTemplate.cshtml";
+	var showSubNav = Model.Value<bool>("showSubnav", fallback: Fallback.ToAncestors);
+	var subNavNode = Model.Value<IPublishedContent>("subNavFromNode", fallback: Fallback.ToAncestors);
 }
 <h1>@Model.Name</h1>
+<article>
 @(Model.Value("content1"))
+</article>
+@if (showSubNav)
+{
+	<aside>
+		<h2>Submenu</h2>
+		
+		@if (showSubNav != null) {
+			if (subNavNode != null) {
+				var subNavSelection = subNavNode.Children.Where(x => x.IsVisible()).ToArray();
+				if (subNavSelection?.Length > 0)
+				{
+					<ul class="subNavigation">
+						@foreach (var item in subNavSelection)
+						{
+							<li>
+								<a href="@item.Url()">@item.Name</a>
+							</li>
+						}
+					</ul>
+				}
+			}
+		}
+	</aside>
+}
