@@ -6,6 +6,8 @@
     Layout = null;
     var version = new UmbracoVersion().SemanticVersion.ToSemanticStringWithoutBuild();
     var logo = Model.Value<MediaWithCrops>("logo", fallback: Fallback.ToAncestors);
+    var customStyles = Model.Value<string>("customStyles", fallback: Fallback.ToAncestors);
+    var customScripts = Html.Raw(Model.Value<string>("customScripts", fallback: Fallback.ToAncestors));
 }
 <!doctype html>
 <html dir="ltr" lang="en-US">
@@ -20,19 +22,31 @@
 		<meta name="dcterms.dateCopyrighted" content="@Model.CreateDate.ToString("D")" />
         <!-- Styles -->
 		<link href="/css/Test1 Styles.css" rel="stylesheet" type="text/css" />
+        @if (customStyles != null)
+        {
+            <style>
+                @customStyles
+            </style>
+        }
     </head>
     <body>
-        @if (logo != null) {
         <header>
-            <a href="/"><img src="@logo.MediaUrl()" alt="Logo" /></a>
+            @if (logo != null) {        
+                <h1 id="logo"><a href="/"><img src="@logo.MediaUrl()" alt="Logo" /></a></h1>
+            }
+            @Html.Partial("Navigation")        
         </header>
-        }
-        @Html.Partial("Navigation")
         <main>
             @RenderBody()
         </main>
-            <footer>
-        Copyright &copy; @DateTime.Now.Year @Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)
+        <footer>
+            Copyright &copy; @DateTime.Now.Year @Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)
         </footer>
+        @if (customScripts != null)
+        {
+            <script>
+                @customScripts
+            </script>
+        }
     </body>
 </html>
