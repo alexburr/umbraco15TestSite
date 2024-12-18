@@ -5,6 +5,7 @@
 	Layout = "test1MasterTemplate.cshtml";
 	var showSubNav = Model.Value<bool>("showSubnav", fallback: Fallback.ToAncestors);
 	var subNavNode = Model.Value<IPublishedContent>("subNavFromNode", fallback: Fallback.ToAncestors);
+	var subNavTitle = Model.Value<string>("subnavTitle", fallback: Fallback.ToAncestors);
 }
 <h1>@Model.Name</h1>
 <article>
@@ -13,8 +14,7 @@
 @if (showSubNav)
 {
 	<aside>
-		<h2>Submenu</h2>
-		
+		<h2>@subNavTitle</h2>
 		@if (showSubNav != null) {
 			if (subNavNode != null) {
 				var subNavSelection = subNavNode.Children.Where(x => x.IsVisible()).ToArray();

@@ -19,12 +19,12 @@ a:hover { color: rgba(85, 143, 144, 1); }
 
 header { background-color: rgba(230, 175, 23, 1); display: flex; align-items: center; justify-content: flex-end; padding: 0; }
     #logo { margin: 0 auto 0 .25em; max-height: 1em; overflow: visible; }
-    #logo img { max-height: 2.125em; filter: drop-shadow(0 1px 0 rgba(230, 175, 23, 1)) drop-shadow(-.25pt -.25pt 0 rgba(255, 255, 255, .75)); }
+    #logo img { max-height: 2.125em; filter: drop-shadow(0 1px 0 rgba(230, 175, 23, 1)) drop-shadow(-.25pt -.25pt 0 rgba(255, 255, 255, .75)); position: absolute; top: .25em; }
 
 header nav { display: flex; justify-content: space-between; }
-header nav ul { display: flex; list-style-type: none; margin: 0; padding: 0; }
+header nav ul { display: flex; list-style-type: none; margin: 0 1em 0 0; padding: 0; }
 header nav ul li { list-style: none;  display: inline-block; padding: 1em 1.5em; }
-header nav ul li a { color: rgba(2, 53, 83, 1); text-decoration: none; text-shadow: -.5pt -.5pt 0 rgba(255, 255, 255, .75); }
+header nav ul li a { color: rgba(2, 53, 83, 1); text-decoration: none; text-shadow: -.5pt -.5pt 0 rgba(255, 255, 255, .5); }
 header nav ul li a:hover { color: rgba(2, 53, 83, 1); }
 
 header nav ul li.current { background: white; }
