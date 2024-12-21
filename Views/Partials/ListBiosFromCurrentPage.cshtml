@@ -1,0 +1,43 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.PublishedCache
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Cms.Core.Services.Navigation
+@using Umbraco.Extensions
+@using Umbraco.Cms.Core.Models
+
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IPublishedUrlProvider PublishedUrlProvider
+@inject IVariationContextAccessor VariationContextAccessor
+@inject IPublishedContentCache PublishedContentCache
+@inject IDocumentNavigationQueryService DocumentNavigationQueryService
+
+@{ var bios = Model.Children(VariationContextAccessor, PublishedContentCache, DocumentNavigationQueryService).Where(x => x.IsVisible(PublishedValueFallback)).ToArray(); }
+
+@* Ensure that the Current Page has children *@
+@if (bios?.Length > 0)
+{
+    <ul>
+        @* Loop through the selection *@
+        @foreach (var bio in bios)
+        {
+            var name = bio.Name;
+            var photo = bio.Value<MediaWithCrops>("photo");
+            var role = bio.Value("role");
+            var pronouns = bio.Value("pronouns");
+            var biography = bio.Value("biography");
+
+            <li>
+                @if (photo != null)
+                {
+                 <img src="@photo.MediaUrl()" alt="@name" style="width:200px" /><br />
+                }
+                @name<br/>
+                @role<br/>
+                @pronouns<br />
+                @biography
+            </li>
+        }
+    </ul>
+}
