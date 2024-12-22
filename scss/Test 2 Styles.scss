@@ -112,7 +112,7 @@ h2 {
     color: $color-blue-mid;
 }
 
-main aside h2 {
+main aside .collection-header h4 {
     color: $color-red-dark;
 }
 
@@ -146,4 +146,11 @@ nav {
 blockquote {
     background-color: $color-gray-light;
     border-left-color: $color-blue-mid;
+}
+
+.bio .card-title {
+    color: $color-blue-dark;
+}
+.bio .card-content .role {
+    color: $color-blue-mid;
 }
