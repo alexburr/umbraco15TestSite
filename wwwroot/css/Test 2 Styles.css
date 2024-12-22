@@ -1,0 +1,49 @@
+@import url(https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400;1,600;1,700&display=swap);
+html,
+button, input, optgroup, select, textarea {
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 12pt;
+}
+
+html {
+  color: rgb(71, 67, 64);
+}
+
+a {
+  color: rgb(2, 53, 83);
+}
+a:hover {
+  color: rgb(85, 143, 144);
+}
+
+h1 {
+  color: rgb(2, 53, 83);
+}
+
+h2 {
+  color: rgb(85, 143, 144);
+}
+
+main aside h2 {
+  color: rgb(161, 5, 18);
+}
+
+nav {
+  background-color: rgb(230, 175, 23);
+}
+nav ul:not(.dropdown-content) li a.active {
+  background-color: rgb(255, 255, 255);
+  color: rgb(71, 67, 64);
+}
+nav ul:not(.dropdown-content) li a:not(.active) {
+  text-shadow: -0.5pt -0.5pt 0 rgb(183.6363636364, 139.7233201581, 18.3636363636);
+}
+nav ul:not(.dropdown-content) li a:hover:not(.active) {
+  background-color: rgb(206.8181818182, 157.3616600791, 20.6818181818);
+}
+
+.collection a.collection-item {
+  color: rgb(2, 53, 83);
+}
+
+/*# sourceMappingURL=Test%202%20Styles.css.map */

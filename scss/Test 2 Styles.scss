@@ -1,0 +1,73 @@
+@use 'sass:color';
+
+@import url(https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400;1,600;1,700&display=swap);
+
+$color-white: rgba(255, 255, 255, 1);
+$color-black: rgb(71, 67, 64);
+$color-blue-dark: rgba(2, 53, 83, 1);
+$color-blue-mid: rgba(85, 143, 144, 1);
+$color-red-dark: rgb(161, 5, 18);
+
+$color-nav-background: rgba(230, 175, 23, 1);
+$color-nav-background-hover: color.adjust($color-nav-background, $lightness: -5%);
+$color-link: $color-blue-dark;
+$color-link-hover: $color-blue-mid;
+$shadow-nav-item: -.5pt -.5pt 0 color.adjust($color-nav-background, $lightness: -10%);
+
+
+html,
+button, input, optgroup, select, textarea {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 12pt;
+}
+
+html {
+    color: $color-black;
+}
+
+a {
+    color: $color-link;
+
+    &:hover {
+        color: $color-link-hover;
+    }
+}
+
+h1 {
+    color: $color-blue-dark;
+}
+
+h2 {
+    color: $color-blue-mid;
+}
+
+main aside h2 {
+    color: $color-red-dark;
+}
+
+nav {
+    background-color: $color-nav-background;
+
+    ul:not(.dropdown-content) {
+        li {
+            a.active {
+                background-color: $color-white;
+                color: $color-black;
+            }
+
+            a:not(.active) {
+                text-shadow: $shadow-nav-item;
+            }
+
+            a:hover:not(.active) {
+                background-color: $color-nav-background-hover;
+            }
+        }
+    }
+}
+
+.collection {
+    a.collection-item {
+        color: $color-link;
+    }
+}

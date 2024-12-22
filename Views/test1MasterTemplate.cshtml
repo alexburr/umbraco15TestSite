@@ -6,6 +6,7 @@
     Layout = null;
     var version = new UmbracoVersion().SemanticVersion.ToSemanticStringWithoutBuild();
     var logo = Model.Value<MediaWithCrops>("logo", fallback: Fallback.ToAncestors);
+    var logoUrl = logo.MediaUrl();
     var customStyles = Model.Value<string>("customStyles", fallback: Fallback.ToAncestors);
     var customScripts = Html.Raw(Model.Value<string>("customScripts", fallback: Fallback.ToAncestors));
 }
@@ -15,13 +16,16 @@
         <title></title>        
         <meta charset="UTF-8" />
         <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Umbraco v@(version)" />
         <meta http-equiv="last-modified" content="@Model.UpdateDate.ToString("D")" />
         <meta name="dcterms.rightsHolder" content="@Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)" />
 		<meta name="dcterms.dateCopyrighted" content="@Model.CreateDate.ToString("D")" />
         <!-- Styles -->
-		<link href="/css/Test1 Styles.css" rel="stylesheet" type="text/css" />
+		@* <link href="/css/Test 1 Styles.css" rel="stylesheet" type="text/css" /> *@
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="/css/materialize.min.css" media="screen,projection"/>
+        <link href="/css/Test 2 Styles.css" rel="stylesheet" type="text/css" />
         @if (customStyles != null)
         {
             <style>
@@ -30,18 +34,21 @@
         }
     </head>
     <body>
-        <header>
-            @if (logo != null) {        
-                <h1 id="logo"><a href="/"><img src="@logo.MediaUrl()" alt="Logo" /></a></h1>
-            }
-            @Html.Partial("Navigation")        
-        </header>
-        <main>
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper">
+                <a href="/" class="brand-logo"><img src="@logoUrl" alt="Logo" /></a>
+                @Html.Partial("Navigation")
+                </div>
+            </nav>
+        </div>
+        <main class="container">
             @RenderBody()
         </main>
         <footer>
             Copyright &copy; @DateTime.Now.Year @Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)
         </footer>
+        <script type="text/javascript" src="/js/materialize.min.js"></script>
         @if (customScripts != null)
         {
             <script>

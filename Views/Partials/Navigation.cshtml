@@ -16,24 +16,22 @@
 
 @if (selection?.Length > 0)
 {
-    <nav>
-        <ul>
-            @foreach (var item in selection)
-            {
-                var itemChildren = item.Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+    <ul class="right hide-on-med-and-down">
+        @foreach (var item in selection)
+        {
+            var itemChildren = item.Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
 
-                <li class="@(item.IsAncestorOrSelf(Model) ? "current" : null)">
-                    <a href="@item.Url(PublishedUrlProvider)">@item.Name</a>
-                    @if (itemChildren?.Length > 0) {
-                        <ul>
-                        @foreach (var itemChild in itemChildren)
-                        {
-                            <li><a href="@itemChild.Url(PublishedUrlProvider)">@itemChild.Name</a></li>
-                        }
-                        </ul>
-                    }
-                </li>
-            }
-        </ul>
-    </nav>
+            <li>
+                <a href="@item.Url(PublishedUrlProvider)" class="@(item.IsAncestorOrSelf(Model) ? "active" : null)">@item.Name</a>
+                @* @if (itemChildren?.Length > 0) { *@
+                @*     <ul> *@
+                @*     @foreach (var itemChild in itemChildren) *@
+                @*     { *@
+                @*         <li><a href="@itemChild.Url(PublishedUrlProvider)">@itemChild.Name</a></li> *@
+                @*     } *@
+                @*     </ul> *@
+                @* } *@
+            </li>
+        }
+    </ul>
 }
