@@ -18,26 +18,55 @@
 @* Ensure that the Current Page has children *@
 @if (bios?.Length > 0)
 {
-    @* Loop through the selection *@
-    @foreach (var bio in bios)
-    {
-        var name = bio.Name;
-        var photo = bio.Value<MediaWithCrops>("photo");
-        var role = bio.Value("role");
-        var pronouns = bio.Value("pronouns");
-        var biography = bio.Value("biography");
+    <div class="row">
+        @* Loop through the selection *@
+        @foreach (var bio in bios)
+        {
+            var name = bio.Name;
+            var photo = bio.Value<MediaWithCrops>("photo");
+            var photoUrl = "";
+            var photoUrlCrop = "";
+            var photoHeight = 0;
+            var photoWidth = 0;
+            var photoClass = "";
 
-        <div class="card">
-            <div class="card-image">
-                @if (photo != null)
-                {
-                    <img src="@photo.MediaUrl()" alt="@name" />
-                }
-                <span class="card-title">@name</span>
+            if (photo != null) {
+                photoUrl = photo.MediaUrl();
+                photoUrlCrop = photo.GetCropUrl("square");
+                photoHeight = photo.Value<int>("umbracoHeight");
+                photoWidth = photo.Value<int>("umbracoWidth");
+                photoClass = photoWidth > photoHeight ? "img-landscape" : "img-portrait";
+                photoClass = photoWidth == photoHeight ? "img-square" : photoClass;
+            }
+
+            var role = bio.Value("role");
+            var pronouns = bio.Value("pronouns");
+            var biography = bio.Value("biography");
+
+            <div class="bio card col s4">
+                <div class="card-image">
+                    @if (photo != null)
+                    {
+                        <img src="@photoUrlCrop" class="@photoClass" alt="@name"/>
+                    }
+                </div>
+                <div class="card-content">
+                    <span class="card-title">@name</span>
+                    <p>
+                        @if (@role != null) {
+                            <b>@role</b>
+                            @if (pronouns != null)
+                            {
+                                <br />
+                            }
+                        }                        
+                        @if (pronouns != null) {                        
+                            <em>@pronouns</em>
+                        }
+                    </p>
+                    <p>@biography</p>
+                </div>
             </div>
-            <div class="card-content">
-                <p>@role |  @pronouns | @biography</p>
-            </div>
-        </div>
-    }
+        }
+    </div>
 }
