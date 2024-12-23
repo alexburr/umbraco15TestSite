@@ -1,0 +1,38 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+	Layout = "test1MasterTemplate.cshtml";
+	var showSubNav = Model.Value<bool>("showSubnav", fallback: Fallback.ToAncestors);
+	var subNavNode = Model.Value<IPublishedContent>("subNavFromNode", fallback: Fallback.ToAncestors);
+	var subNavTitle = Model.Value<string>("subnavTitle", fallback: Fallback.ToAncestors);
+	var articleClass = showSubNav ? "row" : "";
+	var sectionClass = showSubNav ? "col s9" : "";
+	var asideClass = showSubNav ? "col s3" : "";
+}
+<h1>@Model.Name</h1>
+
+<article class="@articleClass">
+	<section class="@sectionClass">
+		@await Html.GetBlockGridHtmlAsync(Model, "property1")
+	</section>
+	@if (showSubNav)
+	{
+		<aside class="@asideClass">
+			@if (subNavNode != null)
+			{
+				var subNavSelection = subNavNode.Children.Where(x => x.IsVisible()).ToArray();
+				if (subNavSelection?.Length > 0)
+				{
+					<div class="collection with-header">
+						<div class="collection-header"><h4>@subNavTitle</h4></div>
+						@foreach (var item in subNavSelection)
+						{
+							<a class="collection-item" href="@item.Url()">@item.Name</a>
+						}
+					</div>
+				}
+			}
+		</aside>
+	}
+</article>
