@@ -80,6 +80,10 @@ body > header > nav > div.nav-wrapper  {
 
 footer {
     margin-bottom: 2em;
+
+    .social {
+        font-size: ratioDimensions(2, $font-size-base, pt);
+    }
 }
 
 article h2:first-child, article section:first-child h2:first-child { margin-top: 0;}

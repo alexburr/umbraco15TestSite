@@ -11,6 +11,7 @@
     var customScripts = Html.Raw(Model.Value<string>("customScripts", fallback: Fallback.ToAncestors));
     var facebookLink = Model.Value<string>("facebook", fallback: Fallback.ToAncestors);
     var instagramLink = Model.Value<string>("instagram", fallback: Fallback.ToAncestors);
+    var youTubeLink = Model.Value<string>("youTube", fallback: Fallback.ToAncestors);
 }
 <!doctype html>
 <html dir="ltr" lang="en-US">
@@ -50,20 +51,24 @@
             @RenderBody()
         </main>
         <footer class="page-footer container">
-            Copyright &copy; @DateTime.Now.Year @Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)<br />
-            @if (facebookLink != null) {
-                <a href="@facebookLink"><i class="fa-brands fa-facebook"></i></a>
-            }
-            @if (instagramLink != null) {
-                <a href="@instagramLink"><i class="fa-brands fa-instagram"></i></a>
-            }
+            Copyright &copy; @DateTime.Now.Year @Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)
+            <div class="social">
+                @if (facebookLink != null) {
+                    <a href="@facebookLink"><i class="fa-brands fa-facebook"></i></a>
+                }
+                @if (instagramLink != null) {
+                    <a href="@instagramLink"><i class="fa-brands fa-instagram"></i></a>
+                }
+                @if (youTubeLink != null)
+                {
+                    <a href="@youTubeLink"><i class="fa-brands fa-youtube"></i></a>
+                }
+            </div>
         </footer>
         <script type="text/javascript" src="/scripts/materialize.min.js"></script>
         @if (customScripts != null)
         {
-            <script>
-                @customScripts
-            </script>
+            @customScripts
         }
     </body>
 </html>

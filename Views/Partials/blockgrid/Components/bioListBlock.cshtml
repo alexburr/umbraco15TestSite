@@ -12,7 +12,6 @@
 
 @{
 	var parentPage = Model.Content.Value<IPublishedContent>("parentPage");
-	// var x = Model.Value<IPublishedContent>("parentPage");
 	if (parentPage != null) {
 		var bios = parentPage.Children(VariationContextAccessor, PublishedContentCache, DocumentNavigationQueryService).Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
 	
