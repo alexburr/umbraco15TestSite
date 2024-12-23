@@ -12,28 +12,36 @@
     It also highlights the current active page/section in the navigation with the CSS class "current".
 *@
 
-@{ var selection = Model.Root().Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray(); }
-
-@if (selection?.Length > 0)
-{
-    <nav>
-        <ul>
-            @foreach (var item in selection)
-            {
-                var itemChildren = item.Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
-
-                <li class="@(item.IsAncestorOrSelf(Model) ? "current" : null)">
-                    <a href="@item.Url(PublishedUrlProvider)">@item.Name</a>
-                    @if (itemChildren?.Length > 0) {
-                        <ul>
-                        @foreach (var itemChild in itemChildren)
-                        {
-                            <li><a href="@itemChild.Url(PublishedUrlProvider)">@itemChild.Name</a></li>
-                        }
-                        </ul>
-                    }
-                </li>
-            }
-        </ul>
-    </nav>
+@{
+    var selection = Model.Root().Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+    var isLoggedIn = Context.User?.Identity?.IsAuthenticated ?? false;
+    var loginLinkText = isLoggedIn ? "Logout" : "Login";
+    var loginLinkIcon = isLoggedIn ? "no_accounts" : "account_circle";
 }
+
+<ul class="right hide-on-med-and-down">
+    @if (selection?.Length > 0)
+    {    
+        @foreach (var item in selection)
+        {
+            var itemChildren = item.Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+
+            <li>
+                <a href="@item.Url(PublishedUrlProvider)" class="@(item.IsAncestorOrSelf(Model) ? "active" : null)">@item.Name</a>
+                @* @if (itemChildren?.Length > 0) { *@
+                @*     <ul> *@
+                @*     @foreach (var itemChild in itemChildren) *@
+                @*     { *@
+                @*         <li><a href="@itemChild.Url(PublishedUrlProvider)">@itemChild.Name</a></li> *@
+                @*     } *@
+                @*     </ul> *@
+                @* } *@
+            </li>
+        }    
+    }
+    <li>
+        <a href="/">
+            <i class="material-icons left">@loginLinkIcon</i> @loginLinkText
+        </a>
+    </li>
+</ul>
