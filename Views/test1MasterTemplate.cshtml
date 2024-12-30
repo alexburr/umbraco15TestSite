@@ -74,14 +74,17 @@
                 @customStyles
             </style>
         }
+        @ScriptTag("/scripts/materialize.min.js")
     </head>
     <body>
         <header class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper">
                     <a href="/" class="brand-logo"><img src="@logoUrl" alt="Logo" /></a>
+                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                     @await Html.PartialAsync("Navigation")
                 </div>
+                @await Html.PartialAsync("NavigationMobile")
             </nav>
         </header>
         <main class="container">
@@ -96,7 +99,12 @@
             </div>
         </footer>
         @* Scripts *@
-        @ScriptTag("/scripts/materialize.min.js")
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.sidenav');
+                var sidenavInstance = M.Sidenav.init(elems, {});
+            });
+        </script>
         @if (customScripts != null)
         {
             @customScripts
