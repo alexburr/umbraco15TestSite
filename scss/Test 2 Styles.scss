@@ -68,28 +68,27 @@ blockquote {
     padding-right: .5em;
 }
 
-body > header > nav > div.nav-wrapper  {
-    padding-left: .5em;
-    padding-right: .5em;
-}
+body > header > nav {
+    .nav-wrapper {
+        padding-left: .5em;
+        padding-right: .5em;
 
-.card-content p:not(:last-child) {
-    margin-bottom: 1em;
-}
+        .brand-logo {
+            max-width: 7em;
+            top: .25em;
 
-.bio .card-image img {
-    object-fit: cover;
-}
-
-footer {
-    margin-bottom: 2em;
-
-    .social {
-        font-size: ratioDimensions(2, $font-size-base, pt);
+            img {
+                width: 100%;
+            }
+        }
     }
 }
 
-article h2:first-child, article section:first-child h2:first-child { margin-top: 0;}
+article, article section:first-child { 
+    h2:first-child { 
+        margin-top: 0;
+    }
+}
 
 article aside .collection.with-header {
     border-width: 0 0 0 1px;
@@ -101,6 +100,22 @@ article aside .collection.with-header {
             margin-top: .25em;
         }
     }
+}
+
+footer {
+    margin-bottom: 2em;
+
+    .social {
+        font-size: ratioDimensions(2, $font-size-base, pt);
+    }
+}
+
+.card-content p:not(:last-child) {
+    margin-bottom: 1em;
+}
+
+.bio .card-image img {
+    object-fit: cover;
 }
 
 // Colors
@@ -160,9 +175,12 @@ blockquote {
     border-left-color: $color-blue-mid;
 }
 
-.bio .card-title {
-    color: $color-blue-dark;
-}
-.bio .card-content .role {
-    color: $color-blue-mid;
+.bio {
+    .card-title {
+        color: $color-blue-dark;
+    }
+
+    .card-content .role {
+        color: $color-blue-mid;
+    }
 }
