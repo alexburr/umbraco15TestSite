@@ -2,70 +2,109 @@
 @using Umbraco.Cms.Core.Models;
 @using Umbraco.Cms.Core.Configuration;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@functions {
+    public static HtmlString MetaTag(string name, string content) {
+        return new HtmlString($"<meta name=\"{name}\" content=\"{content}\" />");
+    }
+
+    public static HtmlString StyleSheetTag(string path, string media = "") {
+        string mediaString = !String.IsNullOrEmpty(media) ? "media=\"" + media + "\"" : "";
+
+        return new HtmlString($"<link href=\"{path}\" rel=\"stylesheet\" type=\"text/css\" {mediaString} />");
+    }
+
+    public static HtmlString SocialFooterLinkTag(string brand = "", string link = "") {
+        if (!String.IsNullOrWhiteSpace(link)) {
+            return new HtmlString($"<a href=\"{link}\"><i class=\"fa-brands fa-{brand}\"></i></a>");
+        }
+        else
+        {
+            return new HtmlString($"");
+        }
+    }
+
+    public static HtmlString ScriptTag(string path, string type = "text/javascript")
+    {
+        return new HtmlString($"<script src=\"{path}\" type=\"{type}\"></script>");
+    }
+}
+
 @{
     Layout = null;
-    var version = new UmbracoVersion().SemanticVersion.ToSemanticStringWithoutBuild();
-    var logo = Model.Value<MediaWithCrops>("logo", fallback: Fallback.ToAncestors);
+
+    var isHomepage = Model.Root().Id == Model.Id;
+
+    var umbracoVersion = new UmbracoVersion().SemanticVersion.ToSemanticStringWithoutBuild();
+    var updatedDate = Model.UpdateDate.ToString("D");
+
+    var logo = Model.Value<MediaWithCrops>("logo", fallback: Fallback.ToAncestors, defaultValue: null);
     var logoUrl = logo?.MediaUrl();
-    var customStyles = Model.Value<string>("customStyles", fallback: Fallback.ToAncestors);
-    var customScripts = Html.Raw(Model.Value<string>("customScripts", fallback: Fallback.ToAncestors));
-    var facebookLink = Model.Value<string>("facebook", fallback: Fallback.ToAncestors);
-    var instagramLink = Model.Value<string>("instagram", fallback: Fallback.ToAncestors);
-    var youTubeLink = Model.Value<string>("youTube", fallback: Fallback.ToAncestors);
+
+    var copyrightHolder = Model.Value<string>("copyrightHolder", fallback: Fallback.ToAncestors, defaultValue: "");
+    var copyrightDate = DateTime.Now.Year;
+    var description = Model.Value<string>("description", fallback: Fallback.ToAncestors, defaultValue: "");
+    var createdDate = Model.CreateDate.ToString("D");
+    var customStyles = Model.Value<string>("customStyles", fallback: Fallback.ToAncestors, defaultValue: "");
+    var customScripts = Html.Raw(Model.Value<string>("customScripts", fallback: Fallback.ToAncestors, defaultValue: ""));
+    var facebookLink = Model.Value<string>("facebook", fallback: Fallback.ToAncestors, defaultValue: "");
+    var instagramLink = Model.Value<string>("instagram", fallback: Fallback.ToAncestors, defaultValue: "");
+    var youTubeLink = Model.Value<string>("youTube", fallback: Fallback.ToAncestors, defaultValue: "");
+
+    var pageTitle = isHomepage ? Model.Root().Name : Model.Name + " - " + Model.Root().Name;
 }
 <!doctype html>
 <html dir="ltr" lang="en-US">
     <head runat="server">
-        <title></title>        
+        <title>@pageTitle</title>
+        @* Meta *@
         <meta charset="UTF-8" />
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="generator" content="Umbraco v@(version)" />
-        <meta http-equiv="last-modified" content="@Model.UpdateDate.ToString("D")" />
-        <meta name="dcterms.rightsHolder" content="@Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)" />
-		<meta name="dcterms.dateCopyrighted" content="@Model.CreateDate.ToString("D")" />
-        <!-- Styles -->
-		@* <link href="/css/Test 1 Styles.css" rel="stylesheet" type="text/css" /> *@
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="/css/fontawesome.min.css" rel="stylesheet" />
-        <link href="/css/brands.min.css" rel="stylesheet" />
-        <link href="/css/materialize.min.css" rel="stylesheet" type="text/css" media="screen,projection" />
-        <link href="/css/Test 2 Styles.min.css" rel="stylesheet" type="text/css" />
+        <meta http-equiv="last-modified" content="@updatedDate" />
+        @MetaTag("description", description)
+        @MetaTag("viewport", "width=device-width, initial-scale=1.0")
+        @MetaTag("generator", "Umbraco v" + umbracoVersion)
+        @MetaTag("dcterms.rightsHolder", copyrightHolder)
+        @MetaTag("dcterms.dateCopyrighted", createdDate)
+        @* Styles *@
+        @StyleSheetTag("/css/materialize.min.css", "screen,projection")
+        @StyleSheetTag("/css/Test 2 Styles.min.css")
         @if (customStyles != null)
         {
             <style>
                 @customStyles
             </style>
         }
+        @ScriptTag("/scripts/materialize.min.js")
     </head>
     <body>
         <header class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper">
-                <a href="/" class="brand-logo"><img src="@logoUrl" alt="Logo" /></a>
-                @Html.Partial("Navigation")
+                    <a href="/" class="brand-logo"><img src="@logoUrl" alt="Logo" /></a>
+                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                    @await Html.PartialAsync("Navigation")
                 </div>
+                @await Html.PartialAsync("NavigationMobile")
             </nav>
         </header>
         <main class="container">
             @RenderBody()
         </main>
         <footer class="page-footer container">
-            Copyright &copy; @DateTime.Now.Year @Model.Value("footerCopyrightHolder", fallback: Fallback.ToAncestors)
+            Copyright &copy; @copyrightDate @copyrightHolder
             <div class="social">
-                @if (facebookLink != null) {
-                    <a href="@facebookLink"><i class="fa-brands fa-facebook"></i></a>
-                }
-                @if (instagramLink != null) {
-                    <a href="@instagramLink"><i class="fa-brands fa-instagram"></i></a>
-                }
-                @if (youTubeLink != null)
-                {
-                    <a href="@youTubeLink"><i class="fa-brands fa-youtube"></i></a>
-                }
+                @SocialFooterLinkTag("facebook", facebookLink)
+                @SocialFooterLinkTag("instagram", instagramLink)
+                @SocialFooterLinkTag("youtube", youTubeLink)
             </div>
         </footer>
-        <script type="text/javascript" src="/scripts/materialize.min.js"></script>
+        @* Scripts *@
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.sidenav');
+                var sidenavInstance = M.Sidenav.init(elems, {});
+            });
+        </script>
         @if (customScripts != null)
         {
             @customScripts

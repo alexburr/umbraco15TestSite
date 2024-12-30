@@ -3,6 +3,7 @@
 
 @{
 	Layout = "test1MasterTemplate.cshtml";
+	var pageTitle = Model.Name;
 	var showSubNav = Model.Value<bool>("showSubnav", fallback: Fallback.ToAncestors);
 	var subNavNode = Model.Value<IPublishedContent>("subNavFromNode", fallback: Fallback.ToAncestors);
 	var subNavTitle = Model.Value<string>("subnavTitle", fallback: Fallback.ToAncestors);
@@ -10,7 +11,7 @@
 	var sectionClass = showSubNav ? "col s9" : "";
 	var asideClass = showSubNav ? "col s3" : "";
 }
-<h1>@Model.Name</h1>
+<h1>@pageTitle</h1>
 
 <article class="@articleClass">
 	<section class="@sectionClass">
