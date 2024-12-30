@@ -1,0 +1,42 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IPublishedUrlProvider PublishedUrlProvider
+
+@{
+    var selection = Model.Root().Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+    var isLoggedIn = Context.User?.Identity?.IsAuthenticated ?? false;
+    var loginLinkText = isLoggedIn ? "Logout" : "Login";
+    var loginLinkIcon = isLoggedIn ? "no_accounts" : "account_circle";
+}
+
+<ul class="sidenav" id="mobileNavigation">
+    @if (selection?.Length > 0)
+    {
+        @foreach (var item in selection)
+        {
+            var itemChildren = item.Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+
+            <li>
+                <a href="@item.Url(PublishedUrlProvider)" class="@(item.IsAncestorOrSelf(Model) ? "active" : null)">@item.Name</a>
+            </li>
+        }
+    }
+    @if (isLoggedIn)
+    {
+        <li>
+            <a href="/">
+                <i class="material-icons left">face</i> My Account
+            </a>
+        </li>
+    }
+    <li>
+        <a href="/">
+            <i class="material-icons left">@loginLinkIcon</i> @loginLinkText
+        </a>
+    </li>
+</ul>
