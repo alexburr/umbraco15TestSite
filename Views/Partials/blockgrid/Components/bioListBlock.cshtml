@@ -1,0 +1,76 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
+
+@using Umbraco.Extensions
+@using Umbraco.Cms.Core.PublishedCache
+@using Umbraco.Cms.Core.Services.Navigation
+@using Umbraco.Cms.Core.Models
+
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IVariationContextAccessor VariationContextAccessor
+@inject IPublishedContentCache PublishedContentCache
+@inject IDocumentNavigationQueryService DocumentNavigationQueryService
+
+@{
+	var parentPage = Model.Content.Value<IPublishedContent>("parentPage");
+	if (parentPage != null) {
+		var bios = parentPage.Children(VariationContextAccessor, PublishedContentCache, DocumentNavigationQueryService).Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+	
+		@if (bios?.Length > 0)
+		{
+            <div class="row">
+                @* Loop through the selection *@
+                @foreach (var bio in bios)
+                {
+                    var name = bio.Name;
+                    var photo = bio.Value<MediaWithCrops>("photo");
+                    var photoUrl = "";
+                    var photoUrlCrop = "";
+                    var photoHeight = 0;
+                    var photoWidth = 0;
+                    var photoClass = "";
+
+                    if (photo != null)
+                    {
+                        photoUrl = photo.MediaUrl();
+                        photoUrlCrop = photo.GetCropUrl("square");
+                        photoHeight = photo.Value<int>("umbracoHeight");
+                        photoWidth = photo.Value<int>("umbracoWidth");
+                        photoClass = photoWidth > photoHeight ? "img-landscape" : "img-portrait";
+                        photoClass = photoWidth == photoHeight ? "img-square" : photoClass;
+                    }
+
+                    var role = bio.Value("role");
+                    var pronouns = bio.Value("pronouns");
+                    var biography = bio.Value("biography");
+
+                    <div class="bio card col s4">
+                        <div class="card-image">
+                            @if (photo != null)
+                            {
+                                <img src="@photoUrlCrop" class="@photoClass" alt="@name" />
+                            }
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title">@name</span>
+                            <p>
+                                @if (@role != null)
+                                {
+                                    <b class="role">@role</b>
+                                    @if (pronouns != null)
+                                    {
+                                        <br />
+                                    }
+                                }
+                                @if (pronouns != null)
+                                {
+                                    <em>@pronouns</em>
+                                }
+                            </p>
+                            <p>@biography</p>
+                        </div>
+                    </div>
+                }
+            </div>
+		}
+	}
+}

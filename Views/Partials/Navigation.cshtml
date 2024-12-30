@@ -39,6 +39,11 @@
             </li>
         }    
     }
+    @if (isLoggedIn) {
+        <li><a href="/">
+            <i class="material-icons left">face</i> My Account</a>
+        </li>
+    }
     <li>
         <a href="/">
             <i class="material-icons left">@loginLinkIcon</i> @loginLinkText
