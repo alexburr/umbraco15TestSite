@@ -63,6 +63,9 @@
     var footerMiddleText = Model.Value<string>("footerMiddleText", fallback: Fallback.ToAncestors, defaultValue: "");
     var footerMiddleTextHtmlString = new HtmlString(footerMiddleText);
 
+    var footerSideText = Model.Value<string>("footerSideText", fallback: Fallback.ToAncestors, defaultValue: "");
+    var footerSideTextHtmlString = new HtmlString(footerSideText);
+
     var footerBottomText = Model.Value<string>("footerBottomText", fallback: Fallback.ToAncestors, defaultValue: "");
     var footerBottomTextHtmlString = new HtmlString(footerBottomText);
 
@@ -112,34 +115,39 @@
     </main>
     <footer class="page-footer">
         <div class="container">
-            <div class="row">                
-                @if (hasMailingAddress)
-                {
-                    <div class="col l3 s12">
+            <div class="row">
+                <div class="col l3 s12">
+                    @if (hasMailingAddress)
+                    {                    
                         <h4>Get In Touch</h4>
                         @mailingAddressHtmlString
-                    </div>
-                }
-                @if (hasSocialLinks)
-                {
-                    <div class="col l4 s12">
-                        <h4>Follow Us</h4>
+                    }
+                    @if (hasSocialLinks)
+                    {                    
                         <p class="social">
                             @SocialFooterLinkTag("facebook", facebookLink)
                             @SocialFooterLinkTag("instagram", instagramLink)
                             @SocialFooterLinkTag("youtube", youTubeLink)
                         </p>
+                    }
+                </div>
+                @if (!String.IsNullOrEmpty(footerMiddleText)) {
+                    <div class="col l4 s12 footer-middle-text">
+                        @footerMiddleTextHtmlString
                     </div>
                 }
-                @if (!String.IsNullOrEmpty(footerMiddleText)) {
-                    <div class="col l5 s12">
-                        @footerMiddleTextHtmlString
+                @if (!String.IsNullOrEmpty(footerSideText))
+                {
+                    <div class="col l5 s12 footer-side-text">
+                        @footerSideTextHtmlString
                     </div>
                 }
             </div>
             @if (!String.IsNullOrEmpty(footerBottomText)) {
-                <div class="row footerBottomText">
+                <div class="row">
+                    <div class="col s12 footer-bottom-text">
                     @footerBottomTextHtmlString
+                    </div>
                 </div>
             }
             </div>

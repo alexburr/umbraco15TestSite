@@ -18,11 +18,13 @@
 // Variables
 $color-white: rgba(255, 255, 255, 1);
 $color-black: rgba(71, 67, 64, 1);
+$color-gold-light: rgba(249, 229, 176, 1);
 $color-gold: rgba(230, 175, 23, 1);
 $color-blue-dark: rgba(2, 53, 83, 1);
 $color-blue-mid: rgba(85, 143, 144, 1);
 $color-red-dark: rgba(161, 5, 18, 1);
 $color-gray-light: rgba(235, 235, 235, 1);
+$color-gray-dark: rgba(71, 67, 64, 1);
 
 $font-size-base: 12;
 $font-size-basic: ratioDimensions(1, $font-size-base, pt);
@@ -48,12 +50,6 @@ p {
     text-align: justify;
 }
 
-.card {
-    .card-content p {
-        text-align: left;
-    }
-}
-
 h1 {
     font-size: ratioDimensions(2, $font-size-base, pt);
 }
@@ -64,9 +60,37 @@ h3, h4 {
     font-size: ratioDimensions(1.33333333333, $font-size-base, pt);
 }
 
-strong { font-weight: 700; }
+strong { 
+    font-weight: 700; 
+}
 
-.footer-copyright { text-align: center; }
+footer {
+
+    p {
+        text-align: left;
+    }
+
+    .social {
+        font-size: ratioDimensions(2, $font-size-base, pt);
+    }
+
+    .footer-bottom-text {
+        p {
+            text-align: center;
+        }
+    }
+
+    .footer-copyright {
+        text-align: center;
+    }
+}
+
+.card {
+    .card-content p {
+        text-align: left;
+    }
+}
+
 
 // Layout/sizing
 blockquote {
@@ -110,16 +134,13 @@ article aside .collection.with-header {
 }
 
 footer {
-    .social {
-        font-size: ratioDimensions(2, $font-size-base, pt);
-        margin: 0;
+    h1, h2, h3, h4, h5, p { 
+        margin-top: .5em;
     }
 
-    .footerBottomText {
-        p {
-            text-align: center;
-        }
-    }
+    .social {  
+        margin: 0;
+    }   
 }
 
 .card-content p:not(:last-child) {
@@ -199,12 +220,12 @@ blockquote {
 }
 
 footer {
-    &.page-footer {
+    &.page-footer, &.page-footer p {
         color: $color-black;
     }
 
     h1, h2, h3, h4 {
-        color: $color-white;
+        color: $color-blue-mid;
     }
 
     a {
@@ -221,5 +242,9 @@ footer {
 }
 
 .page-footer {
-    background-color: $color-gold;
+    background-color: $color-gold-light;
+
+    .footer-copyright {
+        background-color: $color-gold;
+    }
 }
