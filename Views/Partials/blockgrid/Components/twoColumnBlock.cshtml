@@ -1,0 +1,15 @@
+﻿@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
+
+@{
+	var column1Width = Model.Content.Value<int>("column1Width", defaultValue: 6);
+	var column2Width = Model.Content.Value<int>("column2Width", defaultValue: 6);
+
+	var column1Class = "col l" + column1Width + " s12"; 
+	var column2Class = "col l" + column2Width + " s12";
+}
+
+<div class="row">
+	<div class="@column1Class">@Model.Content.Value("column1Content")</div>
+	<div class="@column2Class">@Model.Content.Value("column2Content")</div>
+</div>

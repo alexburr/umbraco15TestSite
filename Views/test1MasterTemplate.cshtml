@@ -4,6 +4,10 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 @functions {
+    public static HtmlString MetaTagHttpEquiv(string httpEquiv, string content) {
+        return new HtmlString($"<meta http-equiv=\"{httpEquiv}\" content=\"{content}\" />");
+    }
+
     public static HtmlString MetaTag(string name, string content) {
         return new HtmlString($"<meta name=\"{name}\" content=\"{content}\" />");
     }
@@ -33,73 +37,129 @@
 @{
     Layout = null;
 
-    var isHomepage = Model.Root().Id == Model.Id;
+    // Umbraco common variables
 
+    var isHomepage = Model.Root().Id == Model.Id;
     var umbracoVersion = new UmbracoVersion().SemanticVersion.ToSemanticStringWithoutBuild();
     var updatedDate = Model.UpdateDate.ToString("D");
+
+    // Site level variables, common to all pages
 
     var logo = Model.Value<MediaWithCrops>("logo", fallback: Fallback.ToAncestors, defaultValue: null);
     var logoUrl = logo?.MediaUrl();
 
     var copyrightHolder = Model.Value<string>("copyrightHolder", fallback: Fallback.ToAncestors, defaultValue: "");
     var copyrightDate = DateTime.Now.Year;
+
+    var mailingAddress = Model.Value<string>("mailingAddress", fallback: Fallback.ToAncestors, defaultValue: "");
+    var hasMailingAddress = !String.IsNullOrEmpty(mailingAddress);
+    var mailingAddressHtmlString = new HtmlString(mailingAddress);
+
+    var facebookLink = Model.Value<string>("facebook", fallback: Fallback.ToAncestors, defaultValue: "");
+    var instagramLink = Model.Value<string>("instagram", fallback: Fallback.ToAncestors, defaultValue: "");
+    var youTubeLink = Model.Value<string>("youTube", fallback: Fallback.ToAncestors, defaultValue: "");
+    var hasSocialLinks = !String.IsNullOrEmpty(facebookLink) || !String.IsNullOrEmpty(instagramLink) || !String.IsNullOrEmpty(youTubeLink);
+
+    var footerMiddleText = Model.Value<string>("footerMiddleText", fallback: Fallback.ToAncestors, defaultValue: "");
+    var footerMiddleTextHtmlString = new HtmlString(footerMiddleText);
+
+    var footerSideText = Model.Value<string>("footerSideText", fallback: Fallback.ToAncestors, defaultValue: "");
+    var footerSideTextHtmlString = new HtmlString(footerSideText);
+
+    var footerBottomText = Model.Value<string>("footerBottomText", fallback: Fallback.ToAncestors, defaultValue: "");
+    var footerBottomTextHtmlString = new HtmlString(footerBottomText);
+
+    // Page level variables
+
     var description = Model.Value<string>("description", fallback: Fallback.ToAncestors, defaultValue: "");
     var createdDate = Model.CreateDate.ToString("D");
     var customStyles = Model.Value<string>("customStyles", fallback: Fallback.ToAncestors, defaultValue: "");
     var customScripts = Html.Raw(Model.Value<string>("customScripts", fallback: Fallback.ToAncestors, defaultValue: ""));
-    var facebookLink = Model.Value<string>("facebook", fallback: Fallback.ToAncestors, defaultValue: "");
-    var instagramLink = Model.Value<string>("instagram", fallback: Fallback.ToAncestors, defaultValue: "");
-    var youTubeLink = Model.Value<string>("youTube", fallback: Fallback.ToAncestors, defaultValue: "");
-
     var pageTitle = isHomepage ? Model.Root().Name : Model.Name + " - " + Model.Root().Name;
 }
 <!doctype html>
 <html dir="ltr" lang="en-US">
-    <head runat="server">
-        <title>@pageTitle</title>
-        @* Meta *@
-        <meta charset="UTF-8" />
-        <meta http-equiv="last-modified" content="@updatedDate" />
-        @MetaTag("description", description)
-        @MetaTag("viewport", "width=device-width, initial-scale=1.0")
-        @MetaTag("generator", "Umbraco v" + umbracoVersion)
-        @MetaTag("dcterms.rightsHolder", copyrightHolder)
-        @MetaTag("dcterms.dateCopyrighted", createdDate)
-        @* Styles *@
-        @StyleSheetTag("/css/materialize.min.css", "screen,projection")
-        @StyleSheetTag("/css/Test 2 Styles.min.css")
-        @if (customStyles != null)
-        {
-            <style>
-                @customStyles
-            </style>
-        }
-        @ScriptTag("/scripts/materialize.min.js")
-    </head>
-    <body>
-        <header class="navbar-fixed">
-            <nav>
-                <div class="nav-wrapper">
-                    <a href="/" class="brand-logo"><img src="@logoUrl" alt="Logo" /></a>
-                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                    @await Html.PartialAsync("Navigation")
+<head runat="server">
+    <title>@pageTitle</title>
+    @* Meta *@
+    <meta charset="UTF-8" />
+    @MetaTagHttpEquiv("last-modified", updatedDate)
+    @MetaTag("description", description)
+    @MetaTag("viewport", "width=device-width, initial-scale=1.0")
+    @MetaTag("generator", "Umbraco v" + umbracoVersion)
+    @MetaTag("dcterms.rightsHolder", copyrightHolder)
+    @MetaTag("dcterms.dateCopyrighted", createdDate)
+    @* Styles *@
+    @StyleSheetTag("/css/Test 2 Styles.min.css", "screen,projection")
+    @if (customStyles != null)
+    {
+        <style>
+            @customStyles
+        </style>
+    }
+    @ScriptTag("/scripts/materialize.min.js")
+</head>
+<body>
+    <header class="navbar">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="/" class="brand-logo"><img src="@logoUrl" alt="Logo" /></a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                @await Html.PartialAsync("Navigation")
+            </div>
+            @await Html.PartialAsync("NavigationMobile")
+        </nav>
+    </header>
+    <main class="container">
+        @RenderBody()
+    </main>
+    <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col l3 s12">
+                    @if (hasMailingAddress)
+                    {                    
+                        <h4>Get In Touch</h4>
+                        @mailingAddressHtmlString
+                    }
+                    @if (hasSocialLinks)
+                    {                    
+                        <p class="social">
+                            @SocialFooterLinkTag("facebook", facebookLink)
+                            @SocialFooterLinkTag("instagram", instagramLink)
+                            @SocialFooterLinkTag("youtube", youTubeLink)
+                        </p>
+                    }
                 </div>
-                @await Html.PartialAsync("NavigationMobile")
-            </nav>
-        </header>
-        <main class="container">
-            @RenderBody()
-        </main>
-        <footer class="page-footer container">
-            Copyright &copy; @copyrightDate @copyrightHolder
-            <div class="social">
-                @SocialFooterLinkTag("facebook", facebookLink)
-                @SocialFooterLinkTag("instagram", instagramLink)
-                @SocialFooterLinkTag("youtube", youTubeLink)
+                @if (!String.IsNullOrEmpty(footerMiddleText)) {
+                    <div class="col l4 s12 footer-middle-text">
+                        @footerMiddleTextHtmlString
+                    </div>
+                }
+                @if (!String.IsNullOrEmpty(footerSideText))
+                {
+                    <div class="col l5 s12 footer-side-text">
+                        @footerSideTextHtmlString
+                    </div>
+                }
+            </div>
+            @if (!String.IsNullOrEmpty(footerBottomText)) {
+                <div class="row">
+                    <div class="col s12 footer-bottom-text">
+                    @footerBottomTextHtmlString
+                    </div>
+                </div>
+            }
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    Copyright &copy; @copyrightDate @copyrightHolder
+                </div>
             </div>
         </footer>
         @* Scripts *@
         <script>
+            // Activate side navigation for mobile
             document.addEventListener('DOMContentLoaded', function() {
                 var elems = document.querySelectorAll('.sidenav');
                 var sidenavInstance = M.Sidenav.init(elems, {});

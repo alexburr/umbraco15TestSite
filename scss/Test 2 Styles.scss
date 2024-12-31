@@ -1,7 +1,10 @@
 @use 'sass:color';
 
+@charset "UTF-8";
+
 // Imports
 @import url(https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400;1,600;1,700&display=swap);
+@import url(/css/materialize.min.css);
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 @import url(/css/fontawesome.min.css);
 @import url(/css/brands.min.css);
@@ -15,11 +18,13 @@
 // Variables
 $color-white: rgba(255, 255, 255, 1);
 $color-black: rgba(71, 67, 64, 1);
-$color-gold: rgba(230, 175, 23, 1); 
+$color-gold-light: rgba(249, 229, 176, 1);
+$color-gold: rgba(230, 175, 23, 1);
 $color-blue-dark: rgba(2, 53, 83, 1);
 $color-blue-mid: rgba(85, 143, 144, 1);
 $color-red-dark: rgba(161, 5, 18, 1);
 $color-gray-light: rgba(235, 235, 235, 1);
+$color-gray-dark: rgba(71, 67, 64, 1);
 
 $font-size-base: 12;
 $font-size-basic: ratioDimensions(1, $font-size-base, pt);
@@ -27,7 +32,7 @@ $font-size-basic: ratioDimensions(1, $font-size-base, pt);
 $color-nav-background: $color-gold;
 $color-nav-background-hover: color.adjust($color-nav-background, $lightness: -5%);
 $color-link: $color-blue-dark;
-$color-link-hover: $color-blue-mid;
+$color-link-hover: color.adjust($color-link, $lightness: 15%);
 $shadow-nav-item: -.5pt -.5pt 0 color.adjust($color-nav-background, $lightness: -10%);
 
 // Typography
@@ -45,12 +50,6 @@ p {
     text-align: justify;
 }
 
-.card {
-    .card-content p {
-        text-align: left;
-    }
-}
-
 h1 {
     font-size: ratioDimensions(2, $font-size-base, pt);
 }
@@ -61,7 +60,39 @@ h3, h4 {
     font-size: ratioDimensions(1.33333333333, $font-size-base, pt);
 }
 
-// Layout/sizing 
+strong { 
+    font-weight: 700; 
+}
+
+footer {
+
+    p {
+        text-align: left;
+    }
+
+    .social {
+        font-size: ratioDimensions(2, $font-size-base, pt);
+    }
+
+    .footer-bottom-text {
+        p {
+            text-align: center;
+        }
+    }
+
+    .footer-copyright {
+        text-align: center;
+    }
+}
+
+.card {
+    .card-content p {
+        text-align: left;
+    }
+}
+
+
+// Layout/sizing
 blockquote {
     padding-top: .25em;
     padding-bottom: .25em;
@@ -103,11 +134,13 @@ article aside .collection.with-header {
 }
 
 footer {
-    margin-bottom: 2em;
-
-    .social {
-        font-size: ratioDimensions(2, $font-size-base, pt);
+    h1, h2, h3, h4, h5, p { 
+        margin-top: .5em;
     }
+
+    .social {  
+        margin: 0;
+    }   
 }
 
 .card-content p:not(:last-child) {
@@ -159,6 +192,7 @@ nav {
 
             a:hover:not(.active) {
                 background-color: $color-nav-background-hover;
+                color: $color-white;
             }
         }
     }
@@ -182,5 +216,35 @@ blockquote {
 
     .card-content .role {
         color: $color-blue-mid;
+    }
+}
+
+footer {
+    &.page-footer, &.page-footer p {
+        color: $color-black;
+    }
+
+    h1, h2, h3, h4 {
+        color: $color-blue-mid;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    .social a {
+        color: $color-red-dark;
+
+        &:hover {
+            color: color.adjust($color-red-dark, $lightness: -15%);
+        }
+    }
+}
+
+.page-footer {
+    background-color: $color-gold-light;
+
+    .footer-copyright {
+        background-color: $color-gold;
     }
 }
