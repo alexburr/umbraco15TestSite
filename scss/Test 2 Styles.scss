@@ -91,6 +91,15 @@ footer {
     }
 }
 
+.event-item .card .card-content {
+    .card-title {
+        color: $color-red-dark;
+    }
+    .days-times {
+        color: $color-blue-mid;
+    }
+}
+
 
 // Layout/sizing
 blockquote {
@@ -150,6 +159,12 @@ footer {
 .bio .card-image img {
     object-fit: cover;
 }
+
+.umb-block-grid__layout-item {
+    .row .col p img { width: 100%; }
+
+}
+
 
 // Colors
 html {
@@ -246,5 +261,12 @@ footer {
 
     .footer-copyright {
         background-color: $color-gold;
+    }
+}
+
+// Media queries (breakpoints from Materialize)
+@media only screen and (min-width: 601px) {
+    article aside .collection.with-header {
+        border-width: 0;
     }
 }

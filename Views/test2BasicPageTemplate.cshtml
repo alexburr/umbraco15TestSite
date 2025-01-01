@@ -8,8 +8,8 @@
 	var subNavNode = Model.Value<IPublishedContent>("subNavFromNode", fallback: Fallback.ToAncestors);
 	var subNavTitle = Model.Value<string>("subnavTitle", fallback: Fallback.ToAncestors);
 	var articleClass = showSubNav ? "row" : "";
-	var sectionClass = showSubNav ? "col s9" : "";
-	var asideClass = showSubNav ? "col s3" : "";
+	var sectionClass = showSubNav ? "col l9 m12 s12" : "";
+	var asideClass = showSubNav ? "col l3 m12 s12" : "";
 }
 <h1>@pageTitle</h1>
 
