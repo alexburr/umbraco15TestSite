@@ -71,6 +71,7 @@
 
     // Page level variables
 
+    var contentType = Model.ContentType.Alias;
     var description = Model.Value<string>("description", fallback: Fallback.ToAncestors, defaultValue: "");
     var createdDate = Model.CreateDate.ToString("D");
     var customStyles = Model.Value<string>("customStyles", fallback: Fallback.ToAncestors, defaultValue: "");
@@ -99,7 +100,7 @@
     }
     @ScriptTag("/scripts/materialize.min.js")
 </head>
-<body>
+<body class="@contentType">
     <header class="navbar">
         <nav>
             <div class="nav-wrapper">

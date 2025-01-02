@@ -24,6 +24,7 @@ $color-blue-dark: rgba(2, 53, 83, 1);
 $color-blue-mid: rgba(85, 143, 144, 1);
 $color-red-dark: rgba(161, 5, 18, 1);
 $color-gray-light: rgba(235, 235, 235, 1);
+$color-gray-mid: rgba(125, 125, 125, 1);
 $color-gray-dark: rgba(71, 67, 64, 1);
 
 $font-size-base: 12;
@@ -56,8 +57,11 @@ h1 {
 h2 {
     font-size: ratioDimensions(1.5, $font-size-base, pt);
 }
-h3, h4 {
+h3 {
     font-size: ratioDimensions(1.33333333333, $font-size-base, pt);
+}
+h4 {
+    font-size: ratioDimensions(1.166666666666, $font-size-base, pt);
 }
 
 strong { 
@@ -90,16 +94,6 @@ footer {
         text-align: left;
     }
 }
-
-.event-item .card .card-content {
-    .card-title {
-        color: $color-red-dark;
-    }
-    .days-times {
-        color: $color-blue-mid;
-    }
-}
-
 
 // Layout/sizing
 blockquote {
@@ -187,6 +181,10 @@ h2 {
     color: $color-blue-mid;
 }
 
+h4 {
+    color: $color-gray-mid;
+}
+
 main aside .collection-header h4 {
     color: $color-red-dark;
 }
@@ -230,6 +228,24 @@ blockquote {
     }
 
     .card-content .role {
+        color: $color-blue-mid;
+    }
+}
+
+body.regularEvent h3.admission {
+    color: $color-red-dark;
+}
+
+.event-item .card .card-content {
+    .card-title {
+        color: $color-red-dark;
+    }
+
+    .days-times {
+        color: $color-blue-mid;
+    }
+
+    .location {
         color: $color-blue-mid;
     }
 }

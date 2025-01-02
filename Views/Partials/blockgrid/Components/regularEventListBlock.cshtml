@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
 
+@using Umbraco.Cms.Core.Routing
 @using Umbraco.Extensions
 @using Umbraco.Cms.Core.PublishedCache
 @using Umbraco.Cms.Core.Services.Navigation
@@ -11,16 +12,23 @@
 @inject IDocumentNavigationQueryService DocumentNavigationQueryService
 
 @{
-	var parentPage = Model.Content.Value<IPublishedContent>("parentPage");
+    var parentPage = Model.Content.Value<IPublishedContent>("parentPage");
 
-	if (parentPage != null)
-	{
-		var events = parentPage.Children(VariationContextAccessor, PublishedContentCache, DocumentNavigationQueryService).Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+    if (parentPage != null)
+    {
+        var events = parentPage.Children(VariationContextAccessor, PublishedContentCache, DocumentNavigationQueryService)
+            .Where(x => x.ContentType.Alias == "regularEvent")
+            .Where(x => x.IsVisible(PublishedValueFallback))
+            .OrderBy(x => x.SortOrder)
+            .ToArray();
 
-		@if (events?.Length > 0)
-		{
+        @if (events?.Length > 0)
+        {
             <div class="row">
-                @* Loop through the selection *@
+                @{
+                    var columnWidth = events.Length > 1 ? "m6 s12" : "s12";
+                }
+
                 @foreach (var eventItem in events)
                 {
                     var name = eventItem.Name;
@@ -42,11 +50,13 @@
                     }
 
                     var daysTimes = eventItem.Value("daysTimes");
+                    var location = eventItem.Value("location");
                     var description = eventItem.Value("description");
                     var admission = eventItem.Value("admission");
+                    var showMoreInfoLink = eventItem.Value<bool>("showMoreInfoLink", fallback: Fallback.ToAncestors);
 
-                    <div class="event-item col s12">
-                        <div class="card horizontal">
+                    <div class="event-item col @columnWidth">
+                        <div class="card">
                             @if (promoImage != null)
                             {
                                 <div class="card-image">
@@ -55,20 +65,38 @@
                             }
                             <div class="card-stacked">
                                 <div class="card-content">
-                                    <span class="card-title">@name</span>
-                                    @if (@daysTimes != null)
+                                    <span class="card-title">
+                                        @if (showMoreInfoLink) {
+                                            <a href="@eventItem.Url()">@name &raquo;</a>
+                                        } else {
+                                            @name
+                                        }                                        
+                                    </span>
+                                    @if (daysTimes != null || location != null)
                                     {
-                                        <p class="days-times"><b>@daysTimes</b></p>
+                                        <p>
+                                            <b class="days-times">@daysTimes</b>
+                                            @if (location != null) {
+                                                <br />
+                                                <span class="location">@location</span>
+                                            }
+                                        </p>
                                     }
-                                    @if (@admission != null)
+                                    @if (admission != null)
                                     {
                                         <p class="admission"><b>@admission</b></p>
                                     }
                                     @if (description != null)
                                     {
                                         @description
-                                    }
+                                    }                                
                                 </div>
+                                @if (showMoreInfoLink)
+                                {
+                                    <div class="card-action">
+                                        <a href="@eventItem.Url()">Learn More &raquo;</a>
+                                    </div>
+                                }
                             </div>
                         </div>                        
                     </div>

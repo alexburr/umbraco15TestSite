@@ -15,7 +15,11 @@
 
 	if (parentPage != null) 
     {
-		var bios = parentPage.Children(VariationContextAccessor, PublishedContentCache, DocumentNavigationQueryService).Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+		var bios = parentPage.Children(VariationContextAccessor, PublishedContentCache, DocumentNavigationQueryService)
+            .Where(x => x.ContentType.Alias == "test1Bio")
+            .Where(x => x.IsVisible(PublishedValueFallback))
+            .OrderBy(x => x.SortOrder)
+            .ToArray();
 	
 		@if (bios?.Length > 0)
 		{
