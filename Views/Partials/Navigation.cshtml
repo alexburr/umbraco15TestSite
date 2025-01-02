@@ -13,7 +13,10 @@
 *@
 
 @{
-    var selection = Model.Root().Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+    var selection = Model.Root().Children
+        .Where(x => x.IsVisible(PublishedValueFallback))
+        .OrderBy(x => x.SortOrder)
+        .ToArray();
     var isLoggedIn = Context.User?.Identity?.IsAuthenticated ?? false;
     var loginLinkText = isLoggedIn ? "Logout" : "Login";
     var loginLinkIcon = isLoggedIn ? "no_accounts" : "account_circle";
@@ -24,10 +27,17 @@
     {    
         @foreach (var item in selection)
         {
-            var itemChildren = item.Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+            @*
+            var itemChildren = item.Children
+                .Where(x => x.IsVisible(PublishedValueFallback))
+                .OrderBy(x => x.SortOrder)
+                .ToArray();
+            *@
 
             <li>
-                <a href="@item.Url(PublishedUrlProvider)" class="@(item.IsAncestorOrSelf(Model) ? "active" : null)">@item.Name</a>
+                <a href="@item.Url(PublishedUrlProvider)" class="@(item.IsAncestorOrSelf(Model) ? "active" : null)">
+                    @item.Name
+                </a>
                 @* @if (itemChildren?.Length > 0) { *@
                 @*     <ul> *@
                 @*     @foreach (var itemChild in itemChildren) *@

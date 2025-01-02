@@ -1,0 +1,107 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
+
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+@using Umbraco.Cms.Core.PublishedCache
+@using Umbraco.Cms.Core.Services.Navigation
+@using Umbraco.Cms.Core.Models
+
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IVariationContextAccessor VariationContextAccessor
+@inject IPublishedContentCache PublishedContentCache
+@inject IDocumentNavigationQueryService DocumentNavigationQueryService
+
+@{
+    var parentPage = Model.Content.Value<IPublishedContent>("parentPage");
+
+    if (parentPage != null)
+    {
+        var events = parentPage.Children(VariationContextAccessor, PublishedContentCache, DocumentNavigationQueryService)
+            .Where(x => x.ContentType.Alias == "regularEvent")
+            .Where(x => x.IsVisible(PublishedValueFallback))
+            .OrderBy(x => x.SortOrder)
+            .ToArray();
+
+        @if (events?.Length > 0)
+        {
+            <div class="row">
+                @{
+                    var columnWidth = events.Length > 1 ? "m6 s12" : "s12";
+                }
+
+                @foreach (var eventItem in events)
+                {
+                    var name = eventItem.Name;
+                    var promoImage = eventItem.Value<MediaWithCrops>("promoImage");
+                    var promoImageUrl = "";
+                    var promoImageUrlCrop = "";
+                    var promoImageHeight = 0;
+                    var promoImageWidth = 0;
+                    var promoImageClass = "";
+
+                    if (promoImage != null)
+                    {
+                        promoImageUrl = promoImage.MediaUrl();
+                        promoImageUrlCrop = promoImage.GetCropUrl("square");
+                        promoImageHeight = promoImage.Value<int>("umbracoHeight");
+                        promoImageWidth = promoImage.Value<int>("umbracoWidth");
+                        promoImageClass = promoImageWidth > promoImageHeight ? "img-landscape" : "img-portrait";
+                        promoImageClass = promoImageWidth == promoImageHeight ? "img-square" : promoImageClass;
+                    }
+
+                    var daysTimes = eventItem.Value("daysTimes");
+                    var location = eventItem.Value("location");
+                    var description = eventItem.Value("description");
+                    var admission = eventItem.Value("admission");
+                    var showMoreInfoLink = eventItem.Value<bool>("showMoreInfoLink", fallback: Fallback.ToAncestors);
+
+                    <div class="event-item col @columnWidth">
+                        <div class="card">
+                            @if (promoImage != null)
+                            {
+                                <div class="card-image">
+                                    <img src="@promoImageUrlCrop" class="@promoImageClass" alt="@name" />
+                                </div>
+                            }
+                            <div class="card-stacked">
+                                <div class="card-content">
+                                    <span class="card-title">
+                                        @if (showMoreInfoLink) {
+                                            <a href="@eventItem.Url()">@name &raquo;</a>
+                                        } else {
+                                            @name
+                                        }                                        
+                                    </span>
+                                    @if (daysTimes != null || location != null)
+                                    {
+                                        <p>
+                                            <b class="days-times">@daysTimes</b>
+                                            @if (location != null) {
+                                                <br />
+                                                <span class="location">@location</span>
+                                            }
+                                        </p>
+                                    }
+                                    @if (admission != null)
+                                    {
+                                        <p class="admission"><b>@admission</b></p>
+                                    }
+                                    @if (description != null)
+                                    {
+                                        @description
+                                    }                                
+                                </div>
+                                @if (showMoreInfoLink)
+                                {
+                                    <div class="card-action">
+                                        <a href="@eventItem.Url()">Learn More &raquo;</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>                        
+                    </div>
+                }
+            </div>
+		}
+	}
+}

@@ -12,8 +12,14 @@
 
 @{
 	var parentPage = Model.Content.Value<IPublishedContent>("parentPage");
-	if (parentPage != null) {
-		var bios = parentPage.Children(VariationContextAccessor, PublishedContentCache, DocumentNavigationQueryService).Where(x => x.IsVisible(PublishedValueFallback)).ToArray();
+
+	if (parentPage != null) 
+    {
+		var bios = parentPage.Children(VariationContextAccessor, PublishedContentCache, DocumentNavigationQueryService)
+            .Where(x => x.ContentType.Alias == "test1Bio")
+            .Where(x => x.IsVisible(PublishedValueFallback))
+            .OrderBy(x => x.SortOrder)
+            .ToArray();
 	
 		@if (bios?.Length > 0)
 		{
@@ -43,7 +49,7 @@
                     var pronouns = bio.Value("pronouns");
                     var biography = bio.Value("biography");
 
-                    <div class="bio card col s4">
+                    <div class="bio card col l4 m6 s12">
                         <div class="card-image">
                             @if (photo != null)
                             {
