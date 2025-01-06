@@ -1,6 +1,6 @@
 @use 'sass:color';
 
-@charset "UTF-8";
+@charset "UTF-8"; 
 
 // Imports
 @import url(https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400;1,600;1,700&display=swap);
@@ -136,6 +136,10 @@ article aside .collection.with-header {
     }
 }
 
+.homepage footer.page-footer {
+    margin-top: 0;
+}
+
 footer {
     h1, h2, h3, h4, h5, p { 
         margin-top: .5em;
@@ -250,6 +254,10 @@ body.regularEvent h3.admission {
     }
 }
 
+.parallax-container {
+    color: $color-white;
+}
+
 footer {
     &.page-footer, &.page-footer p {
         color: $color-black;
@@ -277,6 +285,23 @@ footer {
 
     .footer-copyright {
         background-color: $color-gold;
+    }
+}
+
+// Special content alignment
+.parallax-container {
+    .parallax {
+        img {
+            opacity: 1;
+            transform: translate(-50%);
+        }
+    }
+}
+
+.homepage {
+    .parallax-container {
+        min-height: 380px;
+        height: auto;
     }
 }
 

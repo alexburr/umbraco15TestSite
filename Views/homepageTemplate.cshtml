@@ -1,0 +1,109 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Extensions
+@using Umbraco.Cms.Core.PublishedCache
+@using Umbraco.Cms.Core.Services.Navigation
+@using Umbraco.Cms.Core.Models
+
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    Layout = "masterTemplate.cshtml";
+    var topBannerImage = Model.Value<MediaWithCrops>("topBannerImage");
+    var topBannerImageUrl = (topBannerImage != null) ? topBannerImage.MediaUrl() : null;
+    var topBannerImageUrlCrop = (topBannerImage != null) ? topBannerImage.GetCropUrl("square") : null;
+    var topBannerImageHeight = (topBannerImage != null) ? topBannerImage.Value<int>("umbracoHeight") : 0;
+    var topBannerImageWidth = (topBannerImage != null) ? topBannerImage.Value<int>("umbracoWidth") : 0;
+
+    var middleBannerImage = Model.Value<MediaWithCrops>("middleBannerImage");
+    var middleBannerImageUrl = (middleBannerImage != null) ? middleBannerImage.MediaUrl() : null;
+    var middleBannerImageUrlCrop = (middleBannerImage != null) ? middleBannerImage.GetCropUrl("square") : null;
+    var middleBannerImageHeight = (middleBannerImage != null) ? middleBannerImage.Value<int>("umbracoHeight") : 0;
+    var middleBannerImageWidth = (middleBannerImage != null) ? middleBannerImage.Value<int>("umbracoWidth") : 0;
+
+    var bottomBannerImage = Model.Value<MediaWithCrops>("bottomBannerImage");
+    var bottomBannerImageUrl = (bottomBannerImage != null) ? bottomBannerImage.MediaUrl() : null;
+    var bottomBannerImageUrlCrop = (bottomBannerImage != null) ? bottomBannerImage.GetCropUrl("square") : null;
+    var bottomBannerImageHeight = (bottomBannerImage != null) ? bottomBannerImage.Value<int>("umbracoHeight") : 0;
+    var bottomBannerImageWidth = (bottomBannerImage != null) ? bottomBannerImage.Value<int>("umbracoWidth") : 0;
+}
+@if (topBannerImage != null) {
+    <div id="index-banner" class="parallax-container">
+        <div class="section no-pad-bot">
+            <div class="container">
+                ASDF
+            </div>
+        </div>
+        <div class="parallax">
+            <img src="@topBannerImageUrl" />
+        </div>
+    </div>
+}
+<div class="container">
+    <div class="section">
+        <!--   Icon Section   -->
+        <div class="row">
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">nightlife</i></h2>
+                    <h5 class="center">Lorem Ipsum</h5>
+                    <p class="light">Duis euismod semper leo, non facilisis augue vulputate a. Sed mollis porttitor odio sit amet eleifend. Donec id mattis risus. Fusce ac ipsum id erat tempus faucibus. Nullam mattis id ligula sit amet porttitor. In hac habitasse platea dictumst.</p>
+                </div>
+            </div>
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">theater_comedy</i></h2>
+                    <h5 class="center">Quasi Renticulus</h5>
+                    <p class="light">Quisque in nunc ac erat iaculis venenatis. Nam ut quam hendrerit odio pellentesque imperdiet. Praesent mauris libero, pharetra eget blandit et, scelerisque sed nunc. Nullam efficitur, metus at elementum convallis, libero mauris cursus nisi, feugiat molestie lorem elit malesuada elit.</p>
+                </div>
+            </div>
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">diversity_1</i></h2>
+                    <h5 class="center">E Pluribus Unum</h5>
+                    <p class="light">Duis fermentum magna augue, sed dignissim augue varius a. Praesent vestibulum id sem vitae egestas. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer a leo ultrices, venenatis quam sit amet, aliquam quam.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (middleBannerImage != null)
+{
+    <div id="index-banner" class="parallax-container">
+        <div class="section no-pad-bot">
+            <div class="row center">
+                <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+            </div>
+        </div>
+        <div class="parallax">
+            <img src="@middleBannerImageUrl" />
+        </div>
+    </div>
+}
+<div class="container">
+    <div class="section">
+        <div class="row">
+            <div class="col s12 center">
+                <h3><i class="mdi-content-send brown-text"></i></h3>
+                <h4>Pellentesque lectus odio</h4>
+                <p class="left-align light">
+                    Proin consequat bibendum sem ut imperdiet. Morbi fermentum velit odio. Sed posuere in libero id condimentum. Mauris sit amet molestie odio. Nam at nulla vestibulum ex blandit molestie. Quisque faucibus congue gravida. Pellentesque libero velit, porta sit amet vestibulum eu, sollicitudin a arcu. Proin iaculis, eros ac bibendum laoreet, libero ante efficitur augue, in volutpat odio est quis nunc. Donec blandit, leo id maximus dignissim, mi tortor vehicula nibh, in condimentum nibh eros eget sapien. Nullam non gravida mi, sit amet tincidunt est. Mauris porttitor, elit sit amet mollis ultrices, nibh nibh consequat metus, non venenatis felis quam a nisl. Ut pharetra finibus ex, vitae faucibus ante aliquet nec. Sed auctor magna nec orci vulputate, eu consequat ipsum dictum. Suspendisse congue ultricies justo, ut laoreet ex facilisis eget.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (bottomBannerImage != null)
+{
+    <div class="parallax-container valign-wrapper">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <div class="row center">
+                    <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+                </div>
+            </div>
+        </div>
+        <div class="parallax">
+            <img src="@bottomBannerImageUrl" />
+        </div>
+    </div>
+}

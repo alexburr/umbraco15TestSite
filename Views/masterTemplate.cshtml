@@ -91,7 +91,7 @@
     @MetaTag("dcterms.rightsHolder", copyrightHolder)
     @MetaTag("dcterms.dateCopyrighted", createdDate)
     @* Styles *@
-    @StyleSheetTag("/css/Test 2 Styles.min.css", "screen,projection")
+    @StyleSheetTag("/css/Styles.min.css", "screen,projection")
     @if (customStyles != null)
     {
         <style>
@@ -111,9 +111,7 @@
             @await Html.PartialAsync("NavigationMobile")
         </nav>
     </header>
-    <main class="container">
-        @RenderBody()
-    </main>
+    @RenderBody()   
     <footer class="page-footer">
         <div class="container">
             <div class="row">
@@ -162,8 +160,11 @@
         <script>
             // Activate side navigation for mobile
             document.addEventListener('DOMContentLoaded', function() {
-                var elems = document.querySelectorAll('.sidenav');
-                var sidenavInstance = M.Sidenav.init(elems, {});
+                var sidenavElems = document.querySelectorAll('.sidenav');
+                var sidenavInstance = M.Sidenav.init(sidenavElems, {});
+
+                var parallaxElems = document.querySelectorAll('.parallax');
+                var parallaxInstances = M.Parallax.init(parallaxElems, {});
             });
         </script>
         @if (customScripts != null)

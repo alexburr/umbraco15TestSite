@@ -1,0 +1,70 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+	Layout = "masterTemplate.cshtml";
+	var pageTitle = Model.Name;
+	var showSubNav = Model.Value<bool>("showSubnav", fallback: Fallback.ToAncestors);
+	var subNavNode = Model.Value<IPublishedContent>("subNavFromNode", fallback: Fallback.ToAncestors);
+	var subNavTitle = Model.Value<string>("subnavTitle", fallback: Fallback.ToAncestors);
+	var articleClass = showSubNav ? "row" : "";
+	var sectionClass = showSubNav ? "col l9 m12 s12" : "";
+	var asideClass = showSubNav ? "col l3 m12 s12" : "";
+	var contentType = Model.ContentType.Alias;
+}
+<main class="container">
+	<h1>@pageTitle</h1>
+	<article class="@articleClass">
+		@if (contentType == "regularEvent")
+		{
+			var daysTimes = Model.Value("daysTimes");
+			var location = Model.Value("location");
+			var description = Model.Value("description");
+			var admission = Model.Value("admission");
+
+			@if (daysTimes != null || location != null)
+			{
+				<h2>
+					<b class="days-times">@daysTimes</b>
+					@if (location != null)
+					{
+						<br />
+						<span class="location">@location</span>
+					}
+
+				</h2>
+			}
+			@if (admission != null)
+			{
+				<h3 class="admission">@admission</h3>
+			}
+		}
+
+		<section class="@sectionClass">
+			@await Html.GetBlockGridHtmlAsync(Model, "blockGrid")
+		</section>
+		@if (showSubNav)
+		{
+			<aside class="@asideClass">
+				@if (subNavNode != null)
+				{
+					var subNavSelection = subNavNode.Children
+					.Where(x => x.IsVisible())
+					.OrderBy(x => x.SortOrder)
+					.ToArray();
+
+					if (subNavSelection?.Length > 0)
+					{
+						<div class="collection with-header">
+							<div class="collection-header"><h4>@subNavTitle</h4></div>
+							@foreach (var item in subNavSelection)
+							{
+								<a class="collection-item" href="@item.Url()">@item.Name</a>
+							}
+						</div>
+					}
+				}
+			</aside>
+		}
+	</article>
+</main>
