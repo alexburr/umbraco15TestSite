@@ -8,4 +8,4 @@ Requires **SCSS**:
 
 To compile style sheet:
 
-`sass --watch "scss/Test 2 Styles.scss" "wwwroot/css/Test 2 Styles.min.css" --style compressed`
+`sass --watch "scss/Styles.scss" "wwwroot/css/Styles.min.css" --style compressed`
