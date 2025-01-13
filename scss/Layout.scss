@@ -1,0 +1,68 @@
+// Layout/sizing
+blockquote {
+    padding-top: .25em;
+    padding-bottom: .25em;
+    padding-right: .5em;
+}
+
+body > header > nav {
+    .nav-wrapper {
+        padding-left: .5em;
+        padding-right: .5em;
+
+        .brand-logo {
+            max-width: 7em;
+            top: .25em;
+
+            img {
+                width: 100%;
+            }
+        }
+    }
+}
+
+article, article section:first-child {
+    h2:first-child {
+        margin-top: 0;
+    }
+}
+
+article aside .collection.with-header {
+    border-width: 0 0 0 1px;
+
+    .collection-header {
+        padding-top: 0;
+
+        h4 {
+            margin-top: .25em;
+        }
+    }
+}
+
+.homepage footer.page-footer {
+    margin-top: 0;
+}
+
+footer {
+    h1, h2, h3, h4, h5, p {
+        margin-top: .5em;
+    }
+
+    .social {
+        margin: 0;
+    }
+}
+
+.card-content p:not(:last-child) {
+    margin-bottom: 1em;
+}
+
+.bio .card-image img {
+    object-fit: cover;
+}
+
+.umb-block-grid__layout-item {
+    .row .col p img {
+        width: 100%;
+    }
+}

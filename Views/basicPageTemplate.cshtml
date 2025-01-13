@@ -50,6 +50,7 @@
 				{
 					var subNavSelection = subNavNode.Children
 					.Where(x => x.IsVisible())
+					.Where(x => x.ContentType.Alias == "basicPage")
 					.OrderBy(x => x.SortOrder)
 					.ToArray();
 

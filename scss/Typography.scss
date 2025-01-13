@@ -1,0 +1,71 @@
+// Functions
+@function ratioDimensions($factor: 1, $base-dimension: 12, $unit: pt) {
+    $calcSize: $base-dimension * $factor;
+    @return #{$calcSize}#{$unit};
+}
+
+// Variables
+$font-size-base: 12;
+$font-size-basic: ratioDimensions(1, $font-size-base, pt);
+
+// Typography
+html,
+button, input, optgroup, select, textarea {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: $font-size-basic;
+}
+
+html {
+    line-height: 1.5;
+}
+
+p {
+    text-align: justify;
+}
+
+h1 {
+    font-size: ratioDimensions(2, $font-size-base, pt);
+}
+
+h2 {
+    font-size: ratioDimensions(1.5, $font-size-base, pt);
+}
+
+h3 {
+    font-size: ratioDimensions(1.33333333333, $font-size-base, pt);
+}
+
+h4 {
+    font-size: ratioDimensions(1.166666666666, $font-size-base, pt);
+}
+
+strong {
+    font-weight: 700;
+}
+
+footer {
+
+    p {
+        text-align: left;
+    }
+
+    .social {
+        font-size: ratioDimensions(2, $font-size-base, pt);
+    }
+
+    .footer-bottom-text {
+        p {
+            text-align: center;
+        }
+    }
+
+    .footer-copyright {
+        text-align: center;
+    }
+}
+
+.card {
+    .card-content p {
+        text-align: left;
+    }
+}

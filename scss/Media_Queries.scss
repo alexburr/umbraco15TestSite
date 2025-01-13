@@ -1,0 +1,6 @@
+// Media queries (breakpoints from Materialize)
+@media only screen and (min-width: 601px) {
+    article aside .collection.with-header {
+        border-width: 0;
+    }
+}

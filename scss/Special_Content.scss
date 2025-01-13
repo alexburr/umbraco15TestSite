@@ -1,0 +1,16 @@
+// Special content alignment
+.parallax-container {
+    .parallax {
+        img {
+            opacity: 1;
+            transform: translate(-50%);
+        }
+    }
+}
+
+.homepage {
+    .parallax-container {
+        min-height: 380px;
+        height: auto;
+    }
+}
